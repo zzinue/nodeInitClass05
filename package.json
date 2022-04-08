@@ -1,24 +1,25 @@
 {
-  "name": "node-init",
-  "version": "1.0.0",
-  "description": "this is the first exercise for node",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "first",
-    "exercise",
-    "newbie",
-    "node",
-    "app"
-  ],
-  "author": "@zzinue",
-  "license": "MIT",
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  },
-  "dependencies": {
-    "express": "^4.17.3"
-  }
+    "name": "node-init",
+    "version": "1.0.0",
+    "description": "this is the first exercise for node",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon index.js",
+        "start": "node index.js"
+    },
+    "keywords": [
+        "first",
+        "exercise",
+        "newbie",
+        "node",
+        "app"
+    ],
+    "author": "@zzinue",
+    "license": "MIT",
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    },
+    "dependencies": {
+        "express": "^4.17.3"
+    }
 }
