@@ -1,8 +1,22 @@
 const express = require('express');
+const category = require('../usecases/category');
 // create an instance of express
 const router = express.Router();
-router.get("/", (req, res) => {
-    res.json({ message: "all categories" });
+router.get("/", async(req, res) => {
+    const categories = await category.getAll();
+    res.json({
+        success: true,
+        payload: categories
+    });
+})
+router.post("/", async(req, res) => {
+    const { name, description, price, image } = req.body;
+    const categoryCreated = await category.create({ name, description, price, image });
+    res.json({
+        success: true,
+        message: "category created",
+        payload: categoryCreated
+    });
 })
 router.get("/:id", (req, res) => {
     const { header1 } = req.headers;
@@ -10,13 +24,7 @@ router.get("/:id", (req, res) => {
     console.log(id);
     res.json({ message: `category: ${id}`, header1 });
 })
-router.post("/", (req, res) => {
-    const { name, type } = req.body;
-    res.json({
-        message: "category created",
-        payload: { name, type }
-    });
-})
+
 router.put("/:id", (req, res) => {
     const { id } = req.params;
     const { name, type } = req.body;
