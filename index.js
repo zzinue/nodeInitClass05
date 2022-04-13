@@ -3,24 +3,24 @@ const app = express();
 const apiRouter = require('./src/routes');
 const { logErrors, errorHandler } = require('./src/middlewares/errorHandler');
 const db = require('./src/lib/db');
-const port = 3000
-
+const config = require('./src/lib/config');
+const port = config.app.port
 
 app.use(express.json()); //middleware
+
 apiRouter(app);
-app.use(errorHandler);
+
 app.use(logErrors);
-
-
-/* const productsRouter = require('./src/routes/products');
-app.use('/products', productsRouter); */
+app.use(errorHandler);
 
 app.listen(port, () => {
-    console.log('listening on port 3000');
+    console.log(`welcome to ${config.app.name} app, now listening on ${port}`);
 
-    db.connect().then((result) => {
-        console.log('DB connected');
-    }).catch((err) => {
-        console.log('Connection refused', err);
-    });
+    db.connect()
+        .then(() => {
+            console.log('DB connected');
+        })
+        .catch((err) => {
+            console.log('Connection refused', err);
+        });
 })

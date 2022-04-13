@@ -9,6 +9,11 @@ router.get("/", async(req, res) => {
         payload: users
     });
 })
+router.get("/:id", async(req, res) => {
+    const { id } = req.params;
+    const payload = await user.getById(id)
+    res.json({ succes: true, message: payload });
+})
 router.post("/", async(req, res) => {
     const { name, age, email, career } = req.body;
     const userCreated = await user.create({ name, age, email, career });
@@ -18,20 +23,45 @@ router.post("/", async(req, res) => {
         payload: userCreated
     });
 })
-router.get("/:id", (req, res) => {
-    const { header1 } = req.headers;
-    const id = req.params.id;
-    console.log(id);
-    res.json({ message: `user ${id}`, header1 });
-})
-router.put("/:id", (req, res) => {
-    const { id } = req.params;
-    const { name, age } = req.body;
-    res.json({ message: `user ${id} updated`, payload: { name, age } });
-})
-router.delete("/:id", (req, res) => {
+router.put("/:id", async(req, res, next) => {
+    try {
         const { id } = req.params;
-        res.json({ message: `user ${id} deleted` });
+        const { name, age, email, career } = req.body;
+        const userUpdated = await user.update(id, { name, age, email, career })
+        res.json({
+            succes: true,
+            message: `user ${id} updated`,
+            payload: userUpdated
+        });
+    } catch (error) {
+        next(error)
+    }
+})
+router.patch("/:id", async(req, res, next) => {
+    try {
+        const { id } = req.params
+        const userUpdated = await user.patch(id, {...req.body })
+        res.json({
+            succes: true,
+            message: `User ${id} updated Patch`,
+            payload: userUpdated
+        })
+    } catch (error) {
+        next(error)
+    }
+})
+router.delete("/:id", async(req, res, next) => {
+        try {
+            const { id } = req.params;
+            const userDeleted = await user.del(id)
+            res.json({
+                succes: true,
+                message: `User ${id} deleted`,
+                payload: userDeleted
+            });
+        } catch (error) {
+            next(error)
+        }
     })
     //export as module
 module.exports = router;

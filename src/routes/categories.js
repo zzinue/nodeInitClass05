@@ -9,30 +9,57 @@ router.get("/", async(req, res) => {
         payload: categories
     });
 })
+router.get("/:id", async(req, res) => {
+    const { id } = req.params;
+    const payload = await category.getById(id);
+    res.json({ succes: true, payload });
+})
 router.post("/", async(req, res) => {
-    const { name, description, price, image } = req.body;
-    const categoryCreated = await category.create({ name, description, price, image });
+    const { name, location, utilities, image } = req.body;
+    const categoryCreated = await category.create({ name, location, utilities, image });
     res.json({
         success: true,
         message: "category created",
         payload: categoryCreated
     });
 })
-router.get("/:id", (req, res) => {
-    const { header1 } = req.headers;
-    const id = req.params.id;
-    console.log(id);
-    res.json({ message: `category: ${id}`, header1 });
+
+router.put("/:id", async(req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { name, location, utilities, image } = req.body;
+        const categoryUpdated = await category.update(id, { name, location, utilities, image });
+        res.json({ success: true, message: `categoriy ${id} updated`, payload: categoryUpdated });
+    } catch (error) {
+        next(error)
+    }
+})
+router.patch("/:id", async(req, res, next) => {
+    try {
+        const { id } = req.params;
+        const categoryUpdated = await category.patch(id, {...req.body })
+        res.json({
+            success: true,
+            message: `category ${id} updated Patch`,
+            payload: categoryUpdated
+        })
+    } catch (error) {
+        next(error)
+    }
 })
 
-router.put("/:id", (req, res) => {
-    const { id } = req.params;
-    const { name, type } = req.body;
-    res.json({ message: `categoriy ${id} updated`, payload: { name, type } });
-})
-router.delete("/:id", (req, res) => {
-        const { id } = req.params;
-        res.json({ message: `category ${id} deleted` });
+router.delete("/:id", async(req, res, next) => {
+        try {
+            const { id } = req.params;
+            const categoryDeleted = await category.del(id);
+            res.json({
+                sucees: true,
+                message: `category ${id} deleted`,
+                payload: categoryDeleted
+            });
+        } catch (error) {
+            next(error)
+        }
     })
     //export as module
 module.exports = router;

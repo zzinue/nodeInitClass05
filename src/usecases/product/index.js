@@ -1,9 +1,11 @@
 const Product = require("../../models/products").model
 
 const getAll = async() => {
-    //retrieve all products
-    const allProducts = await Product.find({}).exec()
-    return allProducts;
+    return await Product.find({}).exec()
+}
+const getById = async(id) => {
+    return await Product.findById(id).exec()
+        //Retrieve one product by id
 }
 const create = async(productData) => {
     const { name, price, description, image } = productData;
@@ -16,23 +18,24 @@ const create = async(productData) => {
     const savedProduct = await newProduct.save()
     return savedProduct
 }
-const getByID = async(id) => {
-    //Retrieve one product by id
-}
+
 const update = async(id, productData) => {
-    const { name, price, description, image } = productData;
-    //Update a product 
-    return 'product updated';
+    const { name, description, price, image } = productData;
+    const updatedProduct = await Product.findByIdAndUpdate(id, { name, description, price, image }, { new: true }).exec()
+    return updatedProduct;
 }
-const del = async(id) => {
-    //Delete a product
-    return 'product deleted';
+const patch = async(id, productData) => {
+    return await Product.findByIdAndUpdate(id, {...productData }, { new: true }).exec()
 }
 
+const del = async(id) => {
+    return await Product.findByIdAndDelete(id).exec()
+}
 module.exports = {
     getAll,
     create,
-    getByID,
+    getById,
     update,
+    patch,
     del,
 }
