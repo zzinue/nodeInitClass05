@@ -1,16 +1,26 @@
 const User = require('../../models/users').model;
+const { hash } = require('bcrypt');
+const encrypt = require('../../lib/encrypt');
 const getAll = async() => {
     return await User.find({}).exec();
 }
 const getById = async(id) => {
     return await User.findById(id).exec()
 }
+const getByEmail = async(email) => {
+    return await User.findOne({ email }).exec()
+}
+const authenticate = async(user, password) => {
+    const hash = user.password
+    return await encrypt.veryfyPassword(password, hash)
+}
 const create = async(firstName, lastName, email, password) => {
+    const hash = await encrypt.hashPassword(password);
     const newUser = new User({
         firstName,
         lastName,
         email,
-        password
+        password: hash
     })
     return await newUser.save();
 }
@@ -31,5 +41,7 @@ module.exports = {
     create,
     update,
     patch,
-    del
+    del,
+    getByEmail,
+    authenticate
 }

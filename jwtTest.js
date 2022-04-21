@@ -1,5 +1,4 @@
 const jwt = require('./src/lib/jwt');
-
 jwt
     .verify()
     .then((token) => {

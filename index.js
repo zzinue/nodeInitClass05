@@ -8,7 +8,7 @@ const config = require('./src/lib/config');
 const port = config.app.port
 
 app.use(express.json()); //middleware
-// app.use(authHandler)
+app.use(authHandler)
 
 apiRouter(app);
 

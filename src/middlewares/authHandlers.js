@@ -12,4 +12,4 @@ const authHandler = async(req, res, next) => {
         });
     }
 }
-module.exports = authHandler;
+module.exports = { authHandler };
