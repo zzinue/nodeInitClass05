@@ -1,27 +1,18 @@
-const Category = require('../../models/categories').model;
-
+const Category = require('../../models/category').model
 const getAll = async() => {
     return await Category.find({}).exec();
-
 }
 const getById = async(id) => {
     return await Category.findById(id).exec();
 }
-const create = async(categoryData) => {
-    const { name, location, utilities, image } = categoryData;
-    const newCategory = new Category({
-        name,
-        location,
-        utilities,
-        image
-    })
-    const savedCategory = await newCategory.save();
-    return savedCategory;
+const create = async(name) => {
+    const category = new Category({ name })
+    return category.save()
 }
-const update = async(id, categoryData) => {
-    const { name, utilities, location, image } = categoryData;
-    const updatedCategory = await Category.findByIdAndUpdate(id, { name, utilities, location, image }, { new: true }).exec();
-    return updatedCategory;
+const update = async(id, name) => {
+    const updatedCategory = await Category.findByIdAndUpdate(id).exec();
+    updatedCategory.name = name;
+    return await updatedCategory.save()
 }
 const patch = async(id, categoryData) => {
     return await Category.findByIdAndUpdate(id, {...categoryData }, { new: true }).exec()

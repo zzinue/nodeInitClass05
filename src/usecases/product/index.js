@@ -5,23 +5,21 @@ const getAll = async() => {
     return await Product.find({}).exec()
 }
 const getById = async(id) => {
-    const product = await Product.findById(id).exec()
-    const review = {...product.review, user: `http://localhost:3000/users/${product.review.user}` }
-    product.review = review
-    return { product }
-    //Retrieve one product by id
-}
+        const product = await Product.findById(id).populate('categories').exec()
+        return product //Retrieve one product by id
+    }
+    /* const getCategories = async() => {
+        const categories=
+    } */
 const create = async(productData) => {
-    const { name, price, description, image, review } = productData;
-    const user = await User.findById(review.user).exec()
-    const reviewToSend = {...review, user: user._id }
+    const { name, price, description, image, categories } = productData;
 
     const newProduct = new Product({
         name,
         price,
         description,
         image,
-        review: reviewToSend
+        categories
     })
     const savedProduct = await newProduct.save()
     return savedProduct
