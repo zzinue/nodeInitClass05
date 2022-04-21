@@ -19,14 +19,18 @@ router.get("/:id", async(req, res) => {
     const payload = await product.getById(id);
     res.json({ success: true, payload });
 })
-router.post("/", async(req, res) => {
-    const { name, description, price, image } = req.body;
-    const productCreated = await product.create({ name, description, price, image });
-    res.json({
-        success: true,
-        message: "product created",
-        payload: productCreated
-    });
+router.post("/", async(req, res, next) => {
+    try {
+        const { name, description, price, image, review } = req.body;
+        const productCreated = await product.create({ name, description, price, image, review });
+        res.json({
+            success: true,
+            message: "product created",
+            payload: productCreated
+        });
+    } catch (error) {
+        next(error)
+    }
 })
 router.put("/:id", async(req, res, next) => {
     try {

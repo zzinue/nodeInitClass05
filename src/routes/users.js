@@ -10,18 +10,26 @@ router.get("/", async(req, res) => {
     });
 })
 router.get("/:id", async(req, res) => {
-    const { id } = req.params;
-    const payload = await user.getById(id)
-    res.json({ succes: true, message: payload });
+    try {
+        const { id } = req.params;
+        const retrievedUser = await user.getById(id)
+        res.json({ succes: true, payload: retrievedUser });
+    } catch (error) {
+        next(error)
+    }
 })
-router.post("/", async(req, res) => {
-    const { name, age, email, career } = req.body;
-    const userCreated = await user.create({ name, age, email, career });
-    res.json({
-        succes: true,
-        message: "user created",
-        payload: userCreated
-    });
+router.post("/", async(req, res, next) => {
+    try {
+        const { firstName, lastName, email, password } = req.body;
+        const userCreated = await user.create(firstName, lastName, email, password);
+        res.json({
+            succes: true,
+            message: "user created",
+            payload: userCreated
+        });
+    } catch (error) {
+        next(error);
+    }
 })
 router.put("/:id", async(req, res, next) => {
     try {

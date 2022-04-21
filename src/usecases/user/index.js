@@ -5,16 +5,14 @@ const getAll = async() => {
 const getById = async(id) => {
     return await User.findById(id).exec()
 }
-const create = async(userData) => {
-    const { name, age, email, career } = userData;
+const create = async(firstName, lastName, email, password) => {
     const newUser = new User({
-        name,
-        age,
+        firstName,
+        lastName,
         email,
-        career
+        password
     })
-    const savedUser = await newUser.save();
-    return savedUser;
+    return await newUser.save();
 }
 const update = async(id, userData) => {
     const { name, age, email, career } = userData

@@ -1,6 +1,6 @@
 const logErrors = (err, req, res, next) => {
     console.log('an error occured');
-    console.error(error)
+    console.error(err)
     next(err);
 }
 const errorHandler = (err, req, res, next) => {

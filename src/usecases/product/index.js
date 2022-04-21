@@ -1,19 +1,27 @@
 const Product = require("../../models/products").model
+const User = require('../../models/users').model
 
 const getAll = async() => {
     return await Product.find({}).exec()
 }
 const getById = async(id) => {
-    return await Product.findById(id).exec()
-        //Retrieve one product by id
+    const product = await Product.findById(id).exec()
+    const review = {...product.review, user: `http://localhost:3000/users/${product.review.user}` }
+    product.review = review
+    return { product }
+    //Retrieve one product by id
 }
 const create = async(productData) => {
-    const { name, price, description, image } = productData;
+    const { name, price, description, image, review } = productData;
+    const user = await User.findById(review.user).exec()
+    const reviewToSend = {...review, user: user._id }
+
     const newProduct = new Product({
         name,
         price,
         description,
-        image
+        image,
+        review: reviewToSend
     })
     const savedProduct = await newProduct.save()
     return savedProduct
