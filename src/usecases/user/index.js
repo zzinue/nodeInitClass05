@@ -1,6 +1,7 @@
 const User = require('../../models/users').model;
 const { hash } = require('bcrypt');
 const encrypt = require('../../lib/encrypt');
+
 const getAll = async() => {
     return await User.find({}).exec();
 }

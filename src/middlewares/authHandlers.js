@@ -4,11 +4,13 @@ const authHandler = async(req, res, next) => {
         const { token } = req.headers;
         const verifiedToken = await jwt.verify(token);
         req.params.tokenPayload = verifiedToken;
+        
         next();
     } catch (error) {
+        console.log(error);
         res.status(401).json({
             success: false,
-            message: 'Invalid token'
+            message: 'Invalid token',
         });
     }
 }

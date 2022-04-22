@@ -10,7 +10,7 @@ router.post("/login", async(req, res, next) => {
         const retrievedUser = await user.getByEmail(email);
         const isMatch = await user.authenticate(retrievedUser, password);
         if (isMatch) {
-            const token = await jwt.sign({ sub: retrievedUser._id, })
+            const token = await jwt.sign({ sub: retrievedUser._id, role: retrievedUser.role });
             res.json({
                 success: true,
                 payload: token,

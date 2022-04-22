@@ -1,7 +1,10 @@
 const express = require('express');
 const user = require('../usecases/user');
-// createa an instance of express
+const { authHandler } = require('../middlewares/authHandlers');
+
+// create an instance of express
 const router = express.Router();
+
 router.get("/", async(req, res) => {
     const users = await user.getAll();
     res.json({
